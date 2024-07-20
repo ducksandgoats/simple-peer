@@ -54,7 +54,7 @@ class Peer extends Duplex {
     this.trickle = opts.trickle !== undefined ? opts.trickle : true
     this.allowHalfTrickle = opts.allowHalfTrickle !== undefined ? opts.allowHalfTrickle : false
     this.iceCompleteTimeout = opts.iceCompleteTimeout || ICECOMPLETE_TIMEOUT
-    this.initData = opts.initData || null
+    this.initData = opts.initData === false ? opts.initData : true
 
     this._destroying = false
     this._connected = false
