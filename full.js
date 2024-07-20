@@ -55,6 +55,7 @@ class Peer extends Duplex {
     this.trickle = opts.trickle !== undefined ? opts.trickle : true
     this.allowHalfTrickle = opts.allowHalfTrickle !== undefined ? opts.allowHalfTrickle : false
     this.iceCompleteTimeout = opts.iceCompleteTimeout || ICECOMPLETE_TIMEOUT
+    this.initData = opts.initData || null
 
     this._destroying = false
     this._connected = false
@@ -136,13 +137,15 @@ class Peer extends Duplex {
     // - onfingerprintfailure
     // - onnegotiationneeded
 
-    if (this.initiator || this.channelNegotiated) {
-      this._setupData({
-        channel: this._pc.createDataChannel(this.channelName, this.channelConfig)
-      })
-    } else {
-      this._pc.ondatachannel = event => {
-        this._setupData(event)
+    if(this.initData){
+      if (this.initiator || this.channelNegotiated) {
+        this._setupData({
+          channel: this._pc.createDataChannel(this.channelName, this.channelConfig)
+        })
+      } else {
+        this._pc.ondatachannel = event => {
+          this._setupData(event)
+        }
       }
     }
 
